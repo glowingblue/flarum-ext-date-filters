@@ -1,9 +1,22 @@
 import app from 'flarum/forum/app';
+import { extend } from 'flarum/common/extend';
 import setRouteWithForcedRefresh from 'flarum/common/utils/setRouteWithForcedRefresh';
 import GlobalSearchState from 'flarum/forum/states/GlobalSearchState';
 import DateFilter from '../../common/DateFilter';
 
 export default function extendGlobalSearchState() {
+	extend(GlobalSearchState.prototype, 'params', function (params: Record<string, string>): void {
+		const date = m.route.param('date');
+
+		if (date) params.date = date;
+	});
+
+	extend(GlobalSearchState.prototype, 'stickyParams', function (params: Record<string, string>): void {
+		const date = m.route.param('date');
+
+		if (date) params.date = date;
+	});
+
 	GlobalSearchState.prototype.changeDate = function (date: string): void {
 		const params = this.params();
 
