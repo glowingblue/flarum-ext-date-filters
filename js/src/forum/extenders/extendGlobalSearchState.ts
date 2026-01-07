@@ -1,5 +1,4 @@
 import app from 'flarum/forum/app';
-import { extend } from 'flarum/common/extend';
 import setRouteWithForcedRefresh from 'flarum/common/utils/setRouteWithForcedRefresh';
 import GlobalSearchState from 'flarum/forum/states/GlobalSearchState';
 
