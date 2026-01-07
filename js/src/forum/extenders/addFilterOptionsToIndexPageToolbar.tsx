@@ -6,14 +6,15 @@ import Button from 'flarum/common/components/Button';
 
 import type Mithril from 'mithril';
 import type ItemList from 'flarum/common/utils/ItemList';
+import type { NestedStringArray } from '@askvortsov/rich-icu-message-formatter';
 
 export default function addFilterOptionsToIndexPageToolbar() {
 	extend(IndexPage.prototype, 'viewItems', function (items: ItemList<Mithril.Children>) {
 		const dateFilterMap = app.discussions.dateFilterMap();
 
-		const dateFilterOptions = Object.keys(dateFilterMap).reduce((acc: any, dateFilterId) => {
-			acc[dateFilterId] = app.translator.trans(`glowingblue-date-filters.forum.index_date_filter.${dateFilterId}_button`);
-			return acc;
+		const dateFilterOptions = Object.keys(dateFilterMap).reduce((dateFilterOptionsMap: Record<string, NestedStringArray>, dateFilterId) => {
+			dateFilterOptionsMap[dateFilterId] = app.translator.trans(`glowingblue-date-filters.forum.index_date_filter.${dateFilterId}_button`);
+			return dateFilterOptionsMap;
 		}, {});
 
 		items.add(
