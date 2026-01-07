@@ -9,6 +9,6 @@ declare module 'flarum/forum/states/DiscussionListState' {
 
 declare module 'flarum/forum/states/GlobalSearchState' {
 	export default interface GlobalSearchState {
-		changeDate(dateFilter: string): void;
+		changeDate(date: string): void;
 	}
 }
