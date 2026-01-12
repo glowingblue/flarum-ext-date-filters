@@ -73,6 +73,9 @@ class DateFilterMiddlewareTest extends TestCase
             $payload['apiDocument']['data'] ?? []
         );
 
+        sort($discussionIds);
+        sort($expectedDiscussionIds);
+
         $this->assertSame($expectedDiscussionIds, $discussionIds, "Preset '{$preset}' returned unexpected discussions.");
     }
 
