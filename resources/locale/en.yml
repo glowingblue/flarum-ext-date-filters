@@ -1,1 +1,10 @@
 glowingblue-date-filters:
+  forum:
+    index_date_filter:
+      toggle_dropdown_accessible_label: Toggle date filter dropdown
+      allTime_button: All Time
+      today_button: Today
+      yesterday_button: Yesterday
+      past-7-days_button: Last week
+      past-30-days_button: Last month
+      past-365-days_button: Last year

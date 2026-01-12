@@ -7,23 +7,37 @@ export const FORMAT = 'YYYY-MM-DD';
 export function createdRangeForPreset(preset: DatePresetId): string | null {
 	if (preset === DateFilter.DEFAULT_DATE_PRESET) return null;
 
-	const endExclusive = dayjs().add(1, 'day').format(FORMAT);
+	const today = dayjs().startOf('day');
 
 	let start: string;
+	let endExclusive: string;
 
 	switch (preset) {
-		case 'pastDay':
-			start = dayjs().subtract(1, 'day').format(FORMAT);
+		case 'today':
+			start = today.format(FORMAT);
+			endExclusive = today.add(1, 'day').format(FORMAT);
 			break;
-		case 'pastWeek':
-			start = dayjs().subtract(7, 'day').format(FORMAT);
+
+		case 'yesterday':
+			start = today.subtract(1, 'day').format(FORMAT);
+			endExclusive = today.format(FORMAT);
 			break;
-		case 'pastMonth':
-			start = dayjs().subtract(1, 'month').format(FORMAT);
+
+		case 'past-7-days':
+			start = today.subtract(6, 'day').format(FORMAT);
+			endExclusive = today.add(1, 'day').format(FORMAT);
 			break;
-		case 'pastYear':
-			start = dayjs().subtract(1, 'year').format(FORMAT);
+
+		case 'past-30-days':
+			start = today.subtract(29, 'day').format(FORMAT);
+			endExclusive = today.add(1, 'day').format(FORMAT);
 			break;
+
+		case 'past-365-days':
+			start = today.subtract(364, 'day').format(FORMAT);
+			endExclusive = today.add(1, 'day').format(FORMAT);
+			break;
+
 		default:
 			return null;
 	}

@@ -11,10 +11,11 @@ export default function extendDiscussionListState() {
 	DiscussionListState.prototype.dateFilterMap = function (): Record<DatePresetId, string> {
 		return {
 			allTime: 'allTime',
-			pastDay: 'pastDay',
-			pastWeek: 'pastWeek',
-			pastMonth: 'pastMonth',
-			pastYear: 'pastYear',
+			today: 'today',
+			yesterday: 'yesterday',
+			'past-7-days': 'past-7-days',
+			'past-30-days': 'past-30-days',
+			'past-365-days': 'past-365-days',
 		};
 	};
 
