@@ -11,8 +11,8 @@
 
 namespace GlowingBlue\DateFilters\Tests\integration\forum;
 
-use Flarum\Testing\integration\TestCase;
 use Carbon\Carbon;
+use Flarum\Testing\integration\TestCase;
 
 class DateFilterMiddlewareTest extends TestCase
 {
@@ -43,16 +43,17 @@ class DateFilterMiddlewareTest extends TestCase
     public function datePresetProvider(): array
     {
         return [
-            'today' => ['today', [12]],
-            'yesterday' => ['yesterday', [11]],
-            'past-7-days' => ['past-7-days', [10, 11, 12]],
-            'past-30-days' => ['past-30-days', [7, 8, 9, 10, 11, 12]],
+            'today'         => ['today', [12]],
+            'yesterday'     => ['yesterday', [11]],
+            'past-7-days'   => ['past-7-days', [10, 11, 12]],
+            'past-30-days'  => ['past-30-days', [7, 8, 9, 10, 11, 12]],
             'past-365-days' => ['past-365-days', [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]],
         ];
     }
 
     /**
      * @test
+     *
      * @dataProvider datePresetProvider
      */
     public function can_filter_discussions_by_date_preset(string $preset, array $expectedDiscussionIds): void
