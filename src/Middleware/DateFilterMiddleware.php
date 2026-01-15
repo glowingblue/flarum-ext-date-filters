@@ -27,38 +27,19 @@ class DateFilterMiddleware implements MiddlewareInterface
             $tz = 'UTC';
             $now = CarbonImmutable::now($tz)->startOfDay();
 
-            $start = null;
-            $end = null;
+            $dateKey = $params['date'] ?? null;
 
-            switch ($params['date']) {
-                case 'today':
-                    $start = $now->toDateString();
-                    $end = $now->addDay()->toDateString();
-                    break;
+            $dateFilters = [
+                'today'         => fn($n) => [$n->toDateString(), $n->addDay()->toDateString()],
+                'yesterday'     => fn($n) => [$n->subDay()->toDateString(), $n->toDateString()],
+                'past-7-days'   => fn($n) => [$n->subDays(6)->toDateString(), $n->addDay()->toDateString()],
+                'past-30-days'  => fn($n) => [$n->subDays(29)->toDateString(), $n->addDay()->toDateString()],
+                'past-365-days' => fn($n) => [$n->subDays(364)->toDateString(), $n->addDay()->toDateString()],
+            ];
 
-                case 'yesterday':
-                    $start = $now->subDay()->toDateString();
-                    $end = $now->toDateString();
-                    break;
-
-                case 'past-7-days':
-                    $start = $now->subDays(6)->toDateString();
-                    $end = $now->addDay()->toDateString();
-                    break;
-
-                case 'past-30-days':
-                    $start = $now->subDays(29)->toDateString();
-                    $end = $now->addDay()->toDateString();
-                    break;
-
-                case 'past-365-days':
-                    $start = $now->subDays(364)->toDateString();
-                    $end = $now->addDay()->toDateString();
-                    break;
-            }
-
-            if (isset($start) && isset($end)) {
-                $params['filter']['created'] = $start.'..'.$end;
+            if (array_key_exists($dateKey, $dateFilters)) {
+                [$start, $end] = $dateFilters[$dateKey]($now);
+                $params['filter']['created'] = "$start..$end";
             }
 
             unset($params['date']);
