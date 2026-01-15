@@ -27,7 +27,7 @@ class DateFilterMiddleware implements MiddlewareInterface
             $tz = 'UTC';
             $now = CarbonImmutable::now($tz)->startOfDay();
 
-            $dateKey = $params['date'] ?? null;
+            $dateKey = $params['date'];
 
             $dateFilters = [
                 'today'         => fn($n) => [$n->toDateString(), $n->addDay()->toDateString()],
