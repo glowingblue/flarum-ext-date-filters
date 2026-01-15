@@ -30,11 +30,11 @@ class DateFilterMiddleware implements MiddlewareInterface
             $dateKey = $params['date'];
 
             $dateFilters = [
-                'today'         => fn($n) => [$n->toDateString(), $n->addDay()->toDateString()],
-                'yesterday'     => fn($n) => [$n->subDay()->toDateString(), $n->toDateString()],
-                'past-7-days'   => fn($n) => [$n->subDays(6)->toDateString(), $n->addDay()->toDateString()],
-                'past-30-days'  => fn($n) => [$n->subDays(29)->toDateString(), $n->addDay()->toDateString()],
-                'past-365-days' => fn($n) => [$n->subDays(364)->toDateString(), $n->addDay()->toDateString()],
+                'today'         => fn ($n) => [$n->toDateString(), $n->addDay()->toDateString()],
+                'yesterday'     => fn ($n) => [$n->subDay()->toDateString(), $n->toDateString()],
+                'past-7-days'   => fn ($n) => [$n->subDays(6)->toDateString(), $n->addDay()->toDateString()],
+                'past-30-days'  => fn ($n) => [$n->subDays(29)->toDateString(), $n->addDay()->toDateString()],
+                'past-365-days' => fn ($n) => [$n->subDays(364)->toDateString(), $n->addDay()->toDateString()],
             ];
 
             if (array_key_exists($dateKey, $dateFilters)) {
