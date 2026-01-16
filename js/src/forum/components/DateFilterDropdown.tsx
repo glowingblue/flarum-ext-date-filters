@@ -69,7 +69,7 @@ export default class DateFilterDropdown<CustomAttrs extends IDateFilterDropdownA
 				icon={(app.search.params().date || Object.keys(this.attrs.dateFilterMap)[0]) === DateFilter.CUSTOM_DATE_PRESET ? 'fas fa-check' : true}
 				onclick={() =>
 					app.modal.show(CustomDateRangeModal, {
-						onSaved: (range: { start: string; end: string }) => {
+						onApply: (range: { start: string; end: string }) => {
 							app.search.changeDate('custom', range);
 						},
 					})
