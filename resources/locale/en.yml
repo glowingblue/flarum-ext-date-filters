@@ -8,7 +8,7 @@ glowingblue-date-filters:
       past-7-days_button: Last week
       past-30-days_button: Last month
       past-365-days_button: Last year
-      custom_date_range_button: Custom date range...
+      custom_date_range_button: Custom
 
     custom_date_range_modal:
       title: Select Custom Date Range
