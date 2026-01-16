@@ -3,6 +3,8 @@ import { extend } from 'flarum/common/extend';
 import IndexPage from 'flarum/forum/components/IndexPage';
 import Dropdown from 'flarum/common/components/Dropdown';
 import Button from 'flarum/common/components/Button';
+import Separator from 'flarum/common/components/Separator';
+import CustomDateRangeModal from '../components/CustomDateRangeModal';
 
 import type Mithril from 'mithril';
 import type ItemList from 'flarum/common/utils/ItemList';
@@ -35,6 +37,21 @@ export default function addFilterOptionsToIndexPageToolbar() {
 						</Button>
 					);
 				})}
+				<Separator />
+				<Button
+					buttonClassName="Button"
+					icon="far fa-calendar-plus"
+					onclick={() =>
+						app.modal.show(CustomDateRangeModal, {
+							onSaved: () => {
+								// nothing here yet
+								console.log('Custom date range saved');
+							},
+						})
+					}
+				>
+					{app.translator.trans('glowingblue-date-filters.forum.index_date_filter.custom_date_range_button')}
+				</Button>
 			</Dropdown>
 		);
 	});
