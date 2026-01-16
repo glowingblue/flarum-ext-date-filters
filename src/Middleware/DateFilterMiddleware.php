@@ -62,14 +62,14 @@ class DateFilterMiddleware implements MiddlewareInterface
     private function applyCustomRange(array &$params): void
     {
         $startRaw = $params['start'] ?? null;
-        $endRaw   = $params['end'] ?? null;
+        $endRaw = $params['end'] ?? null;
 
         if (!is_string($startRaw) || !is_string($endRaw)) {
             return;
         }
 
         $start = $this->parseDate($startRaw);
-        $end   = $this->parseDate($endRaw);
+        $end = $this->parseDate($endRaw);
 
         if (!$start || !$end) {
             return;
