@@ -2,7 +2,7 @@ import app from 'flarum/forum/app';
 import { extend } from 'flarum/common/extend';
 import DiscussionListState from 'flarum/forum/states/DiscussionListState';
 import DateFilter from '../../common/DateFilter';
-import { createdRangeForPreset } from '../utils/createdRangeForPreset';
+import { createDateRangeCustom, createDateRangePreset } from '../utils/createDateRangeUtil';
 
 import type { PaginatedListParams } from 'flarum/common/states/PaginatedListState';
 import type { DatePresetId } from '../../common/DateFilter';
@@ -21,16 +21,18 @@ export default function extendDiscussionListState() {
 
 	extend(DiscussionListState.prototype, 'requestParams', function (params: PaginatedListParams) {
 		const selectedPreset = app.search.params().date ?? DateFilter.DEFAULT_DATE_PRESET;
-		const preset = (selectedPreset in app.discussions.dateFilterMap() ? selectedPreset : DateFilter.DEFAULT_DATE_PRESET) as DatePresetId;
 
-		const created = createdRangeForPreset(preset);
+		let created: string | null = null;
+
+		if (selectedPreset === DateFilter.CUSTOM_DATE_PRESET) {
+			created = createDateRangeCustom(app.search.params().start, app.search.params().end);
+		} else {
+			const preset = (selectedPreset in app.discussions.dateFilterMap() ? selectedPreset : DateFilter.DEFAULT_DATE_PRESET) as DatePresetId;
+			created = createDateRangePreset(preset);
+		}
 
 		params.filter ||= {};
-
-		if (created) {
-			params.filter.created = created;
-		} else {
-			delete params.filter.created;
-		}
+		if (created) params.filter.created = created;
+		else delete params.filter.created;
 	});
 }
