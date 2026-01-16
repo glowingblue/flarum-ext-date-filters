@@ -19,13 +19,15 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class DateFilterMiddleware implements MiddlewareInterface
 {
+    private const TZ = 'UTC';
+    private const FORMAT = 'Y-m-d';
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $params = $request->getQueryParams();
 
         if (($params['date'] ?? null) && !isset($params['filter']['created'])) {
-            $tz = 'UTC';
-            $now = CarbonImmutable::now($tz)->startOfDay();
+            $now = CarbonImmutable::now(self::TZ)->startOfDay();
 
             $dateKey = $params['date'];
 
@@ -42,11 +44,58 @@ class DateFilterMiddleware implements MiddlewareInterface
                 $params['filter']['created'] = "$start..$end";
             }
 
-            unset($params['date']);
+            if ($dateKey === 'custom') {
+                $this->applyCustomRange($params);
+            } elseif (array_key_exists($dateKey, $dateFilters)) {
+                [$start, $endExclusive] = $dateFilters[$dateKey]($now);
+                $params['filter']['created'] = "{$start}..{$endExclusive}";
+            }
+
+            unset($params['date'], $params['start'], $params['end']);
 
             $request = $request->withQueryParams($params);
         }
 
         return $handler->handle($request);
+    }
+
+    private function applyCustomRange(array &$params): void
+    {
+        $startRaw = $params['start'] ?? null;
+        $endRaw   = $params['end'] ?? null;
+
+        if (!is_string($startRaw) || !is_string($endRaw)) {
+            return;
+        }
+
+        $start = $this->parseDate($startRaw);
+        $end   = $this->parseDate($endRaw);
+
+        if (!$start || !$end) {
+            return;
+        }
+
+        if ($end->lessThan($start)) {
+            return;
+        }
+
+        $endExclusive = $end->addDay();
+
+        $params['filter']['created'] = $start->toDateString().'..'.$endExclusive->toDateString();
+    }
+
+    private function parseDate(string $value): ?CarbonImmutable
+    {
+        $date = CarbonImmutable::createFromFormat(self::FORMAT, $value, self::TZ);
+
+        if (!$date) {
+            return null;
+        }
+
+        if ($date->format(self::FORMAT) !== $value) {
+            return null;
+        }
+
+        return $date->startOfDay();
     }
 }

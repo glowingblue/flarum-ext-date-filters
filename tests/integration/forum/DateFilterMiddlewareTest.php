@@ -79,6 +79,39 @@ class DateFilterMiddlewareTest extends TestCase
         $this->assertSame($expectedDiscussionIds, $discussionIds, "Preset '{$preset}' returned unexpected discussions.");
     }
 
+    /**
+     * @test
+     */
+    public function can_filter_discussions_by_custom_date_range(): void
+    {
+        $startDate = Carbon::now()->subDays(32)->toDateString();
+        $endDate = Carbon::now()->subDays(6)->toDateString();
+
+        $response = $this->send(
+            $this->request('GET', '/all')
+                ->withQueryParams([
+                    'date'  => 'custom',
+                    'start' => $startDate,
+                    'end'   => $endDate,
+                ])
+        );
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $html = (string) $response->getBody();
+        $payload = $this->extractJsonPayload($html);
+
+        $discussionIds = array_map(
+            fn ($resource) => (int) $resource['id'],
+            $payload['apiDocument']['data'] ?? []
+        );
+
+        sort($discussionIds);
+
+        $expectedDiscussionIds = [6, 7, 8, 9, 10];
+
+        $this->assertSame($expectedDiscussionIds, $discussionIds, 'Custom date range returned unexpected discussions.');
+    }
+
     private function extractJsonPayload(string $html): array
     {
         if (!preg_match(
