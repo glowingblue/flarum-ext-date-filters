@@ -1,10 +1,11 @@
 import DateFilter from '../../common/DateFilter';
-import type { DatePresetId } from '../../common/DateFilter';
 import dayjs from 'dayjs';
+
+import type { DatePresetId } from '../../common/DateFilter';
 
 export const FORMAT = 'YYYY-MM-DD';
 
-export function createdRangeForPreset(preset: DatePresetId): string | null {
+export function createDateRangePreset(preset: DatePresetId): string | null {
 	if (preset === DateFilter.DEFAULT_DATE_PRESET) return null;
 
 	const today = dayjs().startOf('day');
@@ -43,4 +44,19 @@ export function createdRangeForPreset(preset: DatePresetId): string | null {
 	}
 
 	return `${start}..${endExclusive}`;
+}
+
+export function createDateRangeCustom(start?: string, end?: string): string | null {
+	if (!start || !end) return null;
+
+	const startDate = dayjs(start, FORMAT, true);
+	const endDate = dayjs(end, FORMAT, true);
+
+	if (!startDate.isValid() || !endDate.isValid()) return null;
+
+	if (endDate.isBefore(startDate)) return null;
+
+	const endExclusive = endDate.add(1, 'day').format(FORMAT);
+
+	return `${startDate.format(FORMAT)}..${endExclusive}`;
 }
