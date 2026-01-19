@@ -32,7 +32,15 @@ export default function extendDiscussionListState() {
 		}
 
 		params.filter ||= {};
-		if (created) params.filter.created = created;
-		else delete params.filter.created;
+
+		if (created) {
+			params.filter.created = created;
+
+			if (params.filter.q) {
+				params.filter.q += ` created:${created}`;
+			}
+		} else {
+			delete params.filter.created;
+		}
 	});
 }
