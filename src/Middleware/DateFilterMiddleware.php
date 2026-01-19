@@ -53,11 +53,11 @@ class DateFilterMiddleware implements MiddlewareInterface
 
                 $token = 'created:'.$createdValue;
 
-                if (isset($params['q']) && is_string($params['q']) && $params['q'] !== '') {
+                if (isset($params['q'])  && $params['q'] !== '') {
                     $params['q'] .= ' '.$token;
                 }
 
-                if (isset($params['filter']['q']) && is_string($params['filter']['q']) && $params['filter']['q'] !== '') {
+                if (isset($params['filter']['q']) && $params['filter']['q'] !== '') {
                     $params['filter']['q'] .= ' '.$token;
                 }
             }
