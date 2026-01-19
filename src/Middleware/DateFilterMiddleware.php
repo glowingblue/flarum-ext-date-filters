@@ -51,14 +51,14 @@ class DateFilterMiddleware implements MiddlewareInterface
             if ($createdValue) {
                 $params['filter']['created'] = $createdValue;
 
-                $token = 'created:' . $createdValue;
+                $token = 'created:'.$createdValue;
 
                 if (isset($params['q']) && is_string($params['q']) && $params['q'] !== '') {
-                    $params['q'] .= ' ' . $token;
+                    $params['q'] .= ' '.$token;
                 }
 
                 if (isset($params['filter']['q']) && is_string($params['filter']['q']) && $params['filter']['q'] !== '') {
-                    $params['filter']['q'] .= ' ' . $token;
+                    $params['filter']['q'] .= ' '.$token;
                 }
             }
 
@@ -73,14 +73,14 @@ class DateFilterMiddleware implements MiddlewareInterface
     private function customRangeValue(array $params): ?string
     {
         $startRaw = $params['start'] ?? null;
-        $endRaw   = $params['end'] ?? null;
+        $endRaw = $params['end'] ?? null;
 
         if (!is_string($startRaw) || !is_string($endRaw)) {
             return null;
         }
 
         $start = $this->parseDate($startRaw);
-        $end   = $this->parseDate($endRaw);
+        $end = $this->parseDate($endRaw);
 
         if (!$start || !$end) {
             return null;
@@ -92,7 +92,7 @@ class DateFilterMiddleware implements MiddlewareInterface
 
         $endExclusive = $end->addDay();
 
-        return $start->toDateString() . '..' . $endExclusive->toDateString();
+        return $start->toDateString().'..'.$endExclusive->toDateString();
     }
 
     private function parseDate(string $value): ?CarbonImmutable
