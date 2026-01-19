@@ -39,49 +39,60 @@ class DateFilterMiddleware implements MiddlewareInterface
                 'past-365-days' => fn ($n) => [$n->subDays(364)->toDateString(), $n->addDay()->toDateString()],
             ];
 
-            if (array_key_exists($dateKey, $dateFilters)) {
-                [$start, $end] = $dateFilters[$dateKey]($now);
-                $params['filter']['created'] = "$start..$end";
-            }
+            $createdValue = null;
 
             if ($dateKey === 'custom') {
-                $this->applyCustomRange($params);
-            } elseif (array_key_exists($dateKey, $dateFilters)) {
+                $createdValue = $this->customRangeValue($params);
+            } elseif (isset($dateFilters[$dateKey])) {
                 [$start, $endExclusive] = $dateFilters[$dateKey]($now);
-                $params['filter']['created'] = "{$start}..{$endExclusive}";
+                $createdValue = "{$start}..{$endExclusive}";
+            }
+
+            if ($createdValue) {
+                $params['filter']['created'] = $createdValue;
+
+                $token = 'created:' . $createdValue;
+
+                if (isset($params['q']) && is_string($params['q']) && $params['q'] !== '') {
+                    $params['q'] .= ' ' . $token;
+                }
+
+                if (isset($params['filter']['q']) && is_string($params['filter']['q']) && $params['filter']['q'] !== '') {
+                    $params['filter']['q'] .= ' ' . $token;
+                }
             }
 
             unset($params['date'], $params['start'], $params['end']);
 
-            $request = $request->withQueryParams($params);
+            return $handler->handle($request->withQueryParams($params));
         }
 
         return $handler->handle($request);
     }
 
-    private function applyCustomRange(array &$params): void
+    private function customRangeValue(array $params): ?string
     {
         $startRaw = $params['start'] ?? null;
-        $endRaw = $params['end'] ?? null;
+        $endRaw   = $params['end'] ?? null;
 
         if (!is_string($startRaw) || !is_string($endRaw)) {
-            return;
+            return null;
         }
 
         $start = $this->parseDate($startRaw);
-        $end = $this->parseDate($endRaw);
+        $end   = $this->parseDate($endRaw);
 
         if (!$start || !$end) {
-            return;
+            return null;
         }
 
         if ($end->lessThan($start)) {
-            return;
+            return null;
         }
 
         $endExclusive = $end->addDay();
 
-        $params['filter']['created'] = $start->toDateString().'..'.$endExclusive->toDateString();
+        return $start->toDateString() . '..' . $endExclusive->toDateString();
     }
 
     private function parseDate(string $value): ?CarbonImmutable
