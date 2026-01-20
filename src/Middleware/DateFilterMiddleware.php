@@ -23,7 +23,6 @@ class DateFilterMiddleware implements MiddlewareInterface
     private const TZ = 'UTC';
     private const FORMAT = 'Y-m-d';
 
-
     public const ALLOWED_CONTENT = [
         'Flarum\\Forum\\Content\\Index',
         'Flarum\\Tags\\Content\\Tag',
@@ -36,7 +35,6 @@ class DateFilterMiddleware implements MiddlewareInterface
         if (!$this->isAllowedContentForDateFilter($request)) {
             return $handler->handle($request);
         }
-
 
         if (($params['date'] ?? null) && !isset($params['filter']['created'])) {
             $now = CarbonImmutable::now(self::TZ)->startOfDay();
@@ -134,7 +132,6 @@ class DateFilterMiddleware implements MiddlewareInterface
             $content = $reflection->getUseVariables()['content'];
 
             return in_array(get_class($content), self::ALLOWED_CONTENT, true);
-
         } catch (\Throwable $e) {
             return false;
         }
