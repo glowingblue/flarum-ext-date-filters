@@ -12,6 +12,7 @@
 namespace GlowingBlue\DateFilters\Middleware;
 
 use Carbon\CarbonImmutable;
+use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -22,9 +23,20 @@ class DateFilterMiddleware implements MiddlewareInterface
     private const TZ = 'UTC';
     private const FORMAT = 'Y-m-d';
 
+
+    public const ALLOWED_CONTENT = [
+        'Flarum\\Forum\\Content\\Index',
+        'Flarum\\Tags\\Content\\Tag',
+    ];
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $params = $request->getQueryParams();
+
+        if (!$this->isAllowedContentForDateFilter($request)) {
+            return $handler->handle($request);
+        }
+
 
         if (($params['date'] ?? null) && !isset($params['filter']['created'])) {
             $now = CarbonImmutable::now(self::TZ)->startOfDay();
@@ -108,5 +120,23 @@ class DateFilterMiddleware implements MiddlewareInterface
         }
 
         return $date->startOfDay();
+    }
+
+    private function isAllowedContentForDateFilter(ServerRequestInterface $request): bool
+    {
+        try {
+            $reflection = new ReflectionClosure($request->getAttribute('routeHandler'));
+
+            $controller = $reflection->getUseVariables()['controller'];
+
+            $reflection = new ReflectionClosure($controller);
+
+            $content = $reflection->getUseVariables()['content'];
+
+            return in_array(get_class($content), self::ALLOWED_CONTENT, true);
+
+        } catch (\Throwable $e) {
+            return false;
+        }
     }
 }
