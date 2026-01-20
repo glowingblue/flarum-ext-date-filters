@@ -9,6 +9,12 @@ import type ItemList from 'flarum/common/utils/ItemList';
 
 export default function addFilterOptionsToIndexPageToolbar() {
 	extend(IndexPage.prototype, 'viewItems', function (items: ItemList<Mithril.Children>) {
+		const currentRoute = app.current.get('routeName');
+
+		if (currentRoute !== 'index' && currentRoute !== 'tag') {
+			return;
+		}
+
 		const dateFilterMap = app.discussions.dateFilterMap();
 
 		const dateFilterOptions = Object.keys(dateFilterMap).reduce((dateFilterOptionsMap: Record<string, NestedStringArray>, dateFilterId) => {
