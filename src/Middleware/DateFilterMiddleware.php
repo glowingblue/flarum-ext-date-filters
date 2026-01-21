@@ -12,7 +12,7 @@
 namespace GlowingBlue\DateFilters\Middleware;
 
 use Carbon\CarbonImmutable;
-use Laravel\SerializableClosure\Support\ReflectionClosure;
+use Flarum\Settings\SettingsRepositoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -23,16 +23,11 @@ class DateFilterMiddleware implements MiddlewareInterface
     private const TZ = 'UTC';
     private const FORMAT = 'Y-m-d';
 
-    public const ALLOWED_CONTENT = [
-        'Flarum\\Forum\\Content\\Index',
-        'Flarum\\Tags\\Content\\Tag',
-    ];
-
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $params = $request->getQueryParams();
 
-        if (!$this->isAllowedContentForDateFilter($request)) {
+        if (!$this->isDiscussionListPath($request)) {
             return $handler->handle($request);
         }
 
@@ -120,20 +115,27 @@ class DateFilterMiddleware implements MiddlewareInterface
         return $date->startOfDay();
     }
 
-    private function isAllowedContentForDateFilter(ServerRequestInterface $request): bool
+    private function isDiscussionListPath($request): bool
     {
-        try {
-            $reflection = new ReflectionClosure($request->getAttribute('routeHandler'));
+        $path = $request->getAttribute('originalUri')->getPath();
 
-            $controller = $reflection->getUseVariables()['controller'];
+        // Check for the 'index' route (showing all discussions)
+        $settings = resolve(SettingsRepositoryInterface::class);
+        $defaultRoute = $settings->get('default_route');
 
-            $reflection = new ReflectionClosure($controller);
-
-            $content = $reflection->getUseVariables()['content'];
-
-            return in_array(get_class($content), self::ALLOWED_CONTENT, true);
-        } catch (\Throwable $e) {
-            return false;
+        if ($defaultRoute === '/all') {
+            if ($path === '/') {
+                return true;
+            }
+        } elseif ($path === '/all') {
+            return true;
         }
+
+        // Check for the 'tag' route (tag page)
+        if (substr($path, 0, 2) === '/t') {
+            return true;
+        }
+
+        return false;
     }
 }
