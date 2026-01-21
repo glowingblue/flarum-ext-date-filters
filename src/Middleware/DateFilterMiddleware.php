@@ -115,7 +115,7 @@ class DateFilterMiddleware implements MiddlewareInterface
         return $date->startOfDay();
     }
 
-    private function isDiscussionListPath($request): bool
+    private function isDiscussionListPath(ServerRequestInterface $request): bool
     {
         $path = $request->getAttribute('originalUri')->getPath();
 
