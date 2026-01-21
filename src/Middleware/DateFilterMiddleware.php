@@ -13,11 +13,11 @@ namespace GlowingBlue\DateFilters\Middleware;
 
 use Carbon\CarbonImmutable;
 use Flarum\Settings\SettingsRepositoryInterface;
+use Illuminate\Support\Arr;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Illuminate\Support\Arr;
 
 class DateFilterMiddleware implements MiddlewareInterface
 {
@@ -32,7 +32,7 @@ class DateFilterMiddleware implements MiddlewareInterface
         //     return $handler->handle($request);
         // }
 
-        if (! $this->shouldApplyDateFilter($params)) {
+        if (!$this->shouldApplyDateFilter($params)) {
             return $handler->handle($request);
         }
 
@@ -42,7 +42,7 @@ class DateFilterMiddleware implements MiddlewareInterface
 
         $createdValue = $this->createdValueFromDateKey($dateKey, $params);
 
-        if (! $createdValue) {
+        if (!$createdValue) {
             return $handler->handle($request->withQueryParams($params));
         }
 
@@ -55,12 +55,12 @@ class DateFilterMiddleware implements MiddlewareInterface
 
     private function shouldApplyDateFilter(array $params): bool
     {
-        return isset($params['date']) && $params['date'] !== '' && ! isset($params['filter']['created']);
+        return isset($params['date']) && $params['date'] !== '' && !isset($params['filter']['created']);
     }
 
     private function createdValueFromDateKey(?string $dateKey, array $params): ?string
     {
-        if (! is_string($dateKey) || $dateKey === '') {
+        if (!is_string($dateKey) || $dateKey === '') {
             return null;
         }
 
@@ -78,7 +78,7 @@ class DateFilterMiddleware implements MiddlewareInterface
             'past-365-days' => fn (CarbonImmutable $n) => [$n->subDays(364), $n->addDay()],
         ];
 
-        if (! isset($ranges[$dateKey])) {
+        if (!isset($ranges[$dateKey])) {
             return null;
         }
 
