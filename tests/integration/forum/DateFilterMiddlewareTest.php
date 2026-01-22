@@ -132,7 +132,6 @@ class DateFilterMiddlewareTest extends TestCase
         return $decoded;
     }
 
-
     /**
      * @test
      */
