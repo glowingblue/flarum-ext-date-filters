@@ -28,9 +28,9 @@ class DateFilterMiddleware implements MiddlewareInterface
     {
         $params = $request->getQueryParams();
 
-        // if (!$this->isDiscussionListPath($request)) {
-        //     return $handler->handle($request);
-        // }
+        if (!$this->isDiscussionListPath($request)) {
+            return $handler->handle($request);
+        }
 
         if (!$this->shouldApplyDateFilter($params)) {
             return $handler->handle($request);
