@@ -131,4 +131,17 @@ class DateFilterMiddlewareTest extends TestCase
 
         return $decoded;
     }
+
+
+    /**
+     * @test
+     */
+    public function test_no_query_params_returns_valid_response(): void
+    {
+        $response = $this->send(
+            $this->request('GET', '/')
+        );
+
+        $this->assertEquals(200, $response->getStatusCode());
+    }
 }

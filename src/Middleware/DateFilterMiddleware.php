@@ -48,9 +48,9 @@ class DateFilterMiddleware implements MiddlewareInterface
             return $handler->handle($request->withQueryParams($params));
         }
 
-        $params = $this->applyCreatedFilter($params, $createdValue);
+        $params = $this->applyCreatedToFilter($params, $createdValue);
 
-        $params = $this->applyCreatedTokenToSearch($params, $createdValue);
+        $params = $this->applyCreatedToSearch($params, $createdValue);
 
         return $handler->handle($request->withQueryParams($params));
     }
@@ -89,7 +89,7 @@ class DateFilterMiddleware implements MiddlewareInterface
         return $start->toDateString().'..'.$endExclusive->toDateString();
     }
 
-    private function applyCreatedFilter(array $params, string $createdValue): array
+    private function applyCreatedToFilter(array $params, string $createdValue): array
     {
         $params['filter'] = array_merge($params['filter'] ?? [], [
             'created' => $createdValue,
@@ -98,16 +98,12 @@ class DateFilterMiddleware implements MiddlewareInterface
         return $params;
     }
 
-    private function applyCreatedTokenToSearch(array $params, string $createdValue): array
+    private function applyCreatedToSearch(array $params, string $createdValue): array
     {
         $token = 'created:'.$createdValue;
 
         if (isset($params['q']) && $params['q'] !== '') {
             $params['q'] = trim($params['q'].' '.$token);
-        }
-
-        if (isset($params['filter']['q']) && $params['filter']['q'] !== '') {
-            $params['filter']['q'] = trim($params['filter']['q'].' '.$token);
         }
 
         return $params;
