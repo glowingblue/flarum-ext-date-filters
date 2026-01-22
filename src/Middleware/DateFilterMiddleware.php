@@ -36,11 +36,13 @@ class DateFilterMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        $dateKey = Arr::pull($params, 'date');
-        Arr::pull($params, 'start');
-        Arr::pull($params, 'end');
+        $dateKey = $params['date'] ?? null;
 
         $createdValue = $this->createdValueFromDateKey($dateKey, $params);
+
+        Arr::pull($params, 'date');
+        Arr::pull($params, 'start');
+        Arr::pull($params, 'end');
 
         if (!$createdValue) {
             return $handler->handle($request->withQueryParams($params));
