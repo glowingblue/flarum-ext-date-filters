@@ -67,6 +67,14 @@ export default class CustomDateRangeModal<CustomAttrs extends ICustomDateRangeMo
 					max={maxEnd}
 					oninput={(e: InputEvent) => {
 						this.end = (e.target as HTMLInputElement).value;
+
+						const endDate = dayjs(this.end, FORMAT, true);
+						if (!endDate.isValid()) return;
+
+						const startDate = dayjs(this.start, FORMAT, true);
+						if (startDate.isValid() && startDate.isAfter(endDate)) {
+							this.start = this.end;
+						}
 					}}
 				/>
 			</div>
