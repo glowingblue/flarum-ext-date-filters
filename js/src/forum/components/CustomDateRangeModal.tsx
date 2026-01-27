@@ -39,6 +39,9 @@ export default class CustomDateRangeModal<CustomAttrs extends ICustomDateRangeMo
 		const today = dayjs().startOf('day');
 		const maxEnd = today.format(FORMAT);
 
+		const endDate = dayjs(this.end, FORMAT, true);
+		const maxStart = (endDate.isValid() ? endDate : today).format(FORMAT);
+
 		return (
 			<div>
 				<label htmlFor="start">{app.translator.trans('glowingblue-date-filters.forum.custom_date_range_modal.start_date_label')}</label>
@@ -48,7 +51,7 @@ export default class CustomDateRangeModal<CustomAttrs extends ICustomDateRangeMo
 					id="start"
 					name="range-start"
 					value={this.start}
-					max={maxEnd}
+					max={maxStart}
 					oninput={(e: InputEvent) => {
 						this.start = (e.target as HTMLInputElement).value;
 					}}
