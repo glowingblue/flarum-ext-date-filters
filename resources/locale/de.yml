@@ -1,1 +1,18 @@
 glowingblue-date-filters:
+  forum:
+    index_date_filter:
+      toggle_dropdown_accessible_label: Datumsfilter-Dropdown umschalten
+      allTime_button: Gesamte Zeit
+      today_button: Heute
+      yesterday_button: Gestern
+      past-7-days_button: Letzte Woche
+      past-30-days_button: Letzter Monat
+      past-365-days_button: Letztes Jahr
+      custom_date_range_button: Benutzerdefiniert...
+
+    custom_date_range_modal:
+      title: Benutzerdefinierten Datumsbereich auswaehlen
+      start_date_label: 'Startdatum:'
+      end_date_label: 'Enddatum:'
+      cancel_button: Abbrechen
+      apply_button: Anwenden
