@@ -11,8 +11,8 @@
 
 namespace GlowingBlue\DateFilters;
 
-use Flarum\Extend;
 use Flarum\Api\Serializer\ForumSerializer;
+use Flarum\Extend;
 
 return [
     (new Extend\Frontend('forum'))
