@@ -9,6 +9,10 @@ import type ItemList from 'flarum/common/utils/ItemList';
 
 export default function addFilterOptionsToIndexPageToolbar() {
 	extend(IndexPage.prototype, 'viewItems', function (items: ItemList<Mithril.Children>) {
+		const canViewDateFilter = app.forum.attribute<boolean>('canViewDateFilter');
+
+		if (!canViewDateFilter) return;
+
 		const currentRoute = app.current.get('routeName');
 
 		if (currentRoute !== 'index' && currentRoute !== 'tag') {

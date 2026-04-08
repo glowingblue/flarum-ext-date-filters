@@ -1,4 +1,8 @@
 glowingblue-date-filters:
+  admin:
+    permissions:
+      view_date_filter_label: Ver el filtro de fechas en el foro
+
   forum:
     index_date_filter:
       toggle_dropdown_accessible_label: Alternar el menu desplegable del filtro de fecha
