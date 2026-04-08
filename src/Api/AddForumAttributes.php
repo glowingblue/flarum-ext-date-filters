@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Glowingblue\DateFilters\Api;
+namespace GlowingBlue\DateFilters\Api;
 
 use Flarum\Api\Serializer\ForumSerializer;
 
 class AddForumAttributes
 {
-    public function __invoke(ForumSerializer $serializer)
+    public function __invoke(ForumSerializer $serializer): array
     {
         $user = $serializer->getActor();
 
