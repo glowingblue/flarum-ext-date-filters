@@ -136,7 +136,11 @@ class DateFilterMiddleware implements MiddlewareInterface
 
     private function parseDate(string $value): ?CarbonImmutable
     {
-        $date = CarbonImmutable::createFromFormat(self::FORMAT, $value, self::TZ);
+        try {
+            $date = CarbonImmutable::createFromFormat(self::FORMAT, $value, self::TZ);
+        } catch (\Throwable) {
+            return null;
+        }
 
         if (!$date) {
             return null;

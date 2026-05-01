@@ -139,4 +139,54 @@ class DateFilterMiddlewareTest extends TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
     }
+
+    #[Test]
+    public function unknown_date_preset_returns_all_discussions(): void
+    {
+        $response = $this->send(
+            $this->request('GET', '/')
+                ->withQueryParams(['date' => 'not-a-real-preset'])
+        );
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $payload = $this->extractJsonPayload((string) $response->getBody());
+        $this->assertCount(12, $payload['apiDocument']['data'] ?? []);
+    }
+
+    #[Test]
+    public function custom_range_with_end_before_start_returns_all_discussions(): void
+    {
+        $response = $this->send(
+            $this->request('GET', '/')
+                ->withQueryParams([
+                    'date'  => 'custom',
+                    'start' => Carbon::now()->toDateString(),
+                    'end'   => Carbon::now()->subDays(10)->toDateString(),
+                ])
+        );
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $payload = $this->extractJsonPayload((string) $response->getBody());
+        $this->assertCount(12, $payload['apiDocument']['data'] ?? []);
+    }
+
+    #[Test]
+    public function custom_range_with_malformed_dates_returns_all_discussions(): void
+    {
+        $response = $this->send(
+            $this->request('GET', '/')
+                ->withQueryParams([
+                    'date'  => 'custom',
+                    'start' => 'not-a-date',
+                    'end'   => 'also-not-a-date',
+                ])
+        );
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $payload = $this->extractJsonPayload((string) $response->getBody());
+        $this->assertCount(12, $payload['apiDocument']['data'] ?? []);
+    }
 }
