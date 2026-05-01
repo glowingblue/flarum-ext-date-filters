@@ -6,6 +6,8 @@ import Separator from 'flarum/common/components/Separator';
 import DateFilter from '../../common/DateFilter';
 import CustomDateRangeModal from '../components/CustomDateRangeModal';
 import ItemList from 'flarum/common/utils/ItemList';
+import dayjs from 'dayjs';
+import { FORMAT } from '../utils/createDateRangeUtil';
 
 import type Mithril from 'mithril';
 import type { NestedStringArray } from '@askvortsov/rich-icu-message-formatter';
@@ -30,12 +32,22 @@ export default class DateFilterDropdown<CustomAttrs extends IDateFilterDropdownA
   }
 
   dateFilterDropdownLabel(): string | NestedStringArray {
+    const params = app.search.state.params();
+    const customRangeLabel = app.translator.trans('glowingblue-date-filters.forum.index_date_filter.custom_date_range_button');
+
+    if (params.date === DateFilter.CUSTOM_DATE_PRESET) {
+      const start = dayjs(params.start, FORMAT, true);
+      const end = dayjs(params.end, FORMAT, true);
+
+      if (start.isValid() && end.isValid() && !end.isBefore(start)) {
+        return `${start.format(FORMAT)} – ${end.format(FORMAT)}`;
+      }
+
+      return customRangeLabel;
+    }
+
     return (
-      (app.search.state.params().date === DateFilter.CUSTOM_DATE_PRESET &&
-        (app.search.state.params().start && app.search.state.params().end
-          ? `${app.search.state.params().start} – ${app.search.state.params().end}`
-          : app.translator.trans('glowingblue-date-filters.forum.index_date_filter.custom_date_range_button'))) ||
-      this.attrs.dateFilterOptions[app.search.state.params().date] ||
+      this.attrs.dateFilterOptions[params.date] ||
       Object.keys(this.attrs.dateFilterMap).map((key) => this.attrs.dateFilterOptions[key])[0]
     );
   }
