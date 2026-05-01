@@ -10,11 +10,14 @@ import dayjs from 'dayjs';
 import { FORMAT } from '../utils/createDateRangeUtil';
 
 import type Mithril from 'mithril';
-import type { NestedStringArray } from '@askvortsov/rich-icu-message-formatter';
 
+// `Mithril.Children` is used in place of the 1.x `NestedStringArray` from
+// `@askvortsov/rich-icu-message-formatter`. That package is no longer a Flarum
+// core dependency in 2.x; `app.translator.trans()` returns `any[] | string`,
+// and `Mithril.Children` is the closest renderable equivalent.
 export interface IDateFilterDropdownAttrs extends ComponentAttrs {
 	dateFilterMap: Record<string, string>;
-	dateFilterOptions: Record<string, NestedStringArray>;
+	dateFilterOptions: Record<string, Mithril.Children>;
 }
 
 export default class DateFilterDropdown<CustomAttrs extends IDateFilterDropdownAttrs = IDateFilterDropdownAttrs> extends Component<CustomAttrs> {
@@ -31,7 +34,7 @@ export default class DateFilterDropdown<CustomAttrs extends IDateFilterDropdownA
 		);
 	}
 
-	dateFilterDropdownLabel(): string | NestedStringArray {
+	dateFilterDropdownLabel(): Mithril.Children {
 		const params = app.search.state.params();
 		const customRangeLabel = app.translator.trans('glowingblue-date-filters.forum.index_date_filter.custom_date_range_button');
 

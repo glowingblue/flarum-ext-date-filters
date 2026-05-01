@@ -6,7 +6,6 @@ import ItemList from 'flarum/common/utils/ItemList';
 import dayjs from 'dayjs';
 import { FORMAT } from '../utils/createDateRangeUtil';
 
-import type { NestedStringArray } from '@askvortsov/rich-icu-message-formatter';
 import type Mithril from 'mithril';
 
 export interface ICustomDateRangeModalAttrs extends IFormModalAttrs {
@@ -42,7 +41,7 @@ export default class CustomDateRangeModal<
 		return 'CustomDateRangeModal Modal--small';
 	}
 
-	title(): string | NestedStringArray {
+	title(): Mithril.Children {
 		return app.translator.trans('glowingblue-date-filters.forum.custom_date_range_modal.title');
 	}
 
