@@ -4,13 +4,13 @@ import 'flarum/forum/states/DiscussionListState';
 import type { DatePresetId } from '../../common/DateFilter';
 
 declare module 'flarum/forum/states/DiscussionListState' {
-  export default interface DiscussionListState {
-    dateFilterMap(): Record<DatePresetId, string>;
-  }
+	export default interface DiscussionListState {
+		dateFilterMap(): Record<DatePresetId, string>;
+	}
 }
 
 declare module 'flarum/forum/states/GlobalSearchState' {
-  export default interface GlobalSearchState {
-    changeDate(date: string, range?: { start?: string; end?: string }): void;
-  }
+	export default interface GlobalSearchState {
+		changeDate(date: string, range?: { start?: string; end?: string }): void;
+	}
 }

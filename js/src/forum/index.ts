@@ -5,7 +5,7 @@ import extendDiscussionListState from './extenders/extendDiscussionListState';
 import extendGlobalSearchState from './extenders/extendGlobalSearchState';
 
 app.initializers.add('glowingblue-date-filters', () => {
-  addFilterOptionsToIndexPageToolbar();
-  extendDiscussionListState();
-  extendGlobalSearchState();
+	addFilterOptionsToIndexPageToolbar();
+	extendDiscussionListState();
+	extendGlobalSearchState();
 });

@@ -8,24 +8,24 @@ import type Mithril from 'mithril';
 import type ItemList from 'flarum/common/utils/ItemList';
 
 export default function addFilterOptionsToIndexPageToolbar() {
-  extend(IndexPage.prototype, 'viewItems', function (items: ItemList<Mithril.Children>) {
-    const canViewDateFilter = app.forum.attribute<boolean>('canViewDateFilter');
+	extend(IndexPage.prototype, 'viewItems', function (items: ItemList<Mithril.Children>) {
+		const canViewDateFilter = app.forum.attribute<boolean>('canViewDateFilter');
 
-    if (!canViewDateFilter) return;
+		if (!canViewDateFilter) return;
 
-    const currentRoute = app.current.get('routeName');
+		const currentRoute = app.current.get('routeName');
 
-    if (currentRoute !== 'index' && currentRoute !== 'tag') {
-      return;
-    }
+		if (currentRoute !== 'index' && currentRoute !== 'tag') {
+			return;
+		}
 
-    const dateFilterMap = app.discussions.dateFilterMap();
+		const dateFilterMap = app.discussions.dateFilterMap();
 
-    const dateFilterOptions = Object.keys(dateFilterMap).reduce((dateFilterOptionsMap: Record<string, NestedStringArray>, dateFilterId) => {
-      dateFilterOptionsMap[dateFilterId] = app.translator.trans(`glowingblue-date-filters.forum.index_date_filter.${dateFilterId}_button`);
-      return dateFilterOptionsMap;
-    }, {});
+		const dateFilterOptions = Object.keys(dateFilterMap).reduce((dateFilterOptionsMap: Record<string, NestedStringArray>, dateFilterId) => {
+			dateFilterOptionsMap[dateFilterId] = app.translator.trans(`glowingblue-date-filters.forum.index_date_filter.${dateFilterId}_button`);
+			return dateFilterOptionsMap;
+		}, {});
 
-    items.add('date', <DateFilterDropdown dateFilterMap={dateFilterMap} dateFilterOptions={dateFilterOptions} />);
-  });
+		items.add('date', <DateFilterDropdown dateFilterMap={dateFilterMap} dateFilterOptions={dateFilterOptions} />);
+	});
 }
