@@ -11,16 +11,16 @@
 
 namespace GlowingBlue\DateFilters\Api;
 
-use Flarum\Api\Serializer\ForumSerializer;
+use Flarum\Api\Context;
+use Flarum\Api\Schema;
 
 class AddForumAttributes
 {
-    public function __invoke(ForumSerializer $serializer): array
+    public function __invoke(): array
     {
-        $user = $serializer->getActor();
-
-        $attributes['canViewDateFilter'] = $user->can('viewDateFilter');
-
-        return $attributes;
+        return [
+            Schema\Boolean::make('canViewDateFilter')
+                ->get(fn ($model, Context $context): bool => $context->getActor()->can('viewDateFilter')),
+        ];
     }
 }
