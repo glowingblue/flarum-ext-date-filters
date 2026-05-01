@@ -24,7 +24,7 @@ export default class CustomDateRangeModal<
   oninit(vnode: Mithril.Vnode) {
     super.oninit(vnode);
 
-    const params = app.search?.params?.() ?? {};
+    const params = app.search?.state?.params?.() ?? {};
     if (params.start) this.start = params.start;
     if (params.end) this.end = params.end;
   }

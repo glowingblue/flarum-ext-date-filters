@@ -32,10 +32,10 @@ export default class DateFilterDropdown<CustomAttrs extends IDateFilterDropdownA
   dateFilterDropdownLabel(): string | NestedStringArray {
     return (
       (app.search.state.params().date === DateFilter.CUSTOM_DATE_PRESET &&
-        (app.search.params().start && app.search.params().end
-          ? `${app.search.params().start} – ${app.search.params().end}`
+        (app.search.state.params().start && app.search.state.params().end
+          ? `${app.search.state.params().start} – ${app.search.state.params().end}`
           : app.translator.trans('glowingblue-date-filters.forum.index_date_filter.custom_date_range_button'))) ||
-      this.attrs.dateFilterOptions[app.search.params().date] ||
+      this.attrs.dateFilterOptions[app.search.state.params().date] ||
       Object.keys(this.attrs.dateFilterMap).map((key) => this.attrs.dateFilterOptions[key])[0]
     );
   }
@@ -53,10 +53,10 @@ export default class DateFilterDropdown<CustomAttrs extends IDateFilterDropdownA
   presetFilterOptionsView() {
     return Object.keys(this.attrs.dateFilterOptions).map((value) => {
       const label = this.attrs.dateFilterOptions[value];
-      const active = (app.search.params().date || Object.keys(this.attrs.dateFilterMap)[0]) === value;
+      const active = (app.search.state.params().date || Object.keys(this.attrs.dateFilterMap)[0]) === value;
 
       return (
-        <Button icon={active ? 'fas fa-check' : true} onclick={app.search.changeDate.bind(app.search, value)} active={active}>
+        <Button icon={active ? 'fas fa-check' : true} onclick={app.search.state.changeDate.bind(app.search.state, value)} active={active}>
           {label}
         </Button>
       );
@@ -66,15 +66,15 @@ export default class DateFilterDropdown<CustomAttrs extends IDateFilterDropdownA
   customRangeView() {
     return (
       <Button
-        icon={(app.search.params().date || Object.keys(this.attrs.dateFilterMap)[0]) === DateFilter.CUSTOM_DATE_PRESET ? 'fas fa-check' : true}
+        icon={(app.search.state.params().date || Object.keys(this.attrs.dateFilterMap)[0]) === DateFilter.CUSTOM_DATE_PRESET ? 'fas fa-check' : true}
         onclick={() =>
           app.modal.show(CustomDateRangeModal, {
             onApply: (range: { start: string; end: string }) => {
-              app.search.changeDate('custom', range);
+              app.search.state.changeDate('custom', range);
             },
           })
         }
-        active={(app.search.params().date || Object.keys(this.attrs.dateFilterMap)[0]) === DateFilter.CUSTOM_DATE_PRESET}
+        active={(app.search.state.params().date || Object.keys(this.attrs.dateFilterMap)[0]) === DateFilter.CUSTOM_DATE_PRESET}
       >
         {app.translator.trans('glowingblue-date-filters.forum.index_date_filter.custom_date_range_button')}
       </Button>

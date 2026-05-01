@@ -25,7 +25,7 @@ export default function extendDiscussionListState() {
     let created: string | null = null;
 
     if (selectedPreset === DateFilter.CUSTOM_DATE_PRESET) {
-      created = createCustomDateRange(app.search.params().start, app.search.params().end);
+      created = createCustomDateRange(app.search.state.params().start, app.search.state.params().end);
     } else {
       const preset = (selectedPreset in app.discussions.dateFilterMap() ? selectedPreset : DateFilter.DEFAULT_DATE_PRESET) as DatePresetId;
       created = createPresetDateRange(preset);
