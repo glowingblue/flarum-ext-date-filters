@@ -1,1 +1,1 @@
-module.exports = require('@glowingblue-dev/flarum-webpack-config')();
+module.exports = require('flarum-webpack-config')();
