@@ -13,7 +13,7 @@ jobs:
       frontend_directory: ./js
       backend_directory: .
       js_package_manager: yarn
-      main_git_branch: 1.x
+      main_git_branch: 2.x
 
       git_actor_name: ${{ vars.GIT_ACTOR_NAME }}
       git_actor_email: ${{ vars.GIT_ACTOR_EMAIL }}
