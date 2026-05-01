@@ -7,6 +7,7 @@
     "type": "flarum-extension",
     "license": "proprietary",
     "require": {
+        "php": "^8.3",
         "flarum/core": "^2.0.0-beta"
     },
     "authors": [
@@ -29,6 +30,7 @@
         "flarum-extension": {
             "title": "GB Date Filters",
             "category": "feature",
+            "database-support": ["mysql", "sqlite", "pgsql"],
             "icon": {
                 "name": "far fa-calendar-alt",
                 "backgroundColor": "#00a7e3",
