@@ -20,7 +20,7 @@ export default function extendDiscussionListState() {
   };
 
   extend(DiscussionListState.prototype, 'requestParams', function (params: PaginatedListParams) {
-    const selectedPreset = app.search.params().date ?? DateFilter.DEFAULT_DATE_PRESET;
+    const selectedPreset = app.search.state.params().date ?? DateFilter.DEFAULT_DATE_PRESET;
 
     let created: string | null = null;
 

@@ -31,7 +31,7 @@ export default class DateFilterDropdown<CustomAttrs extends IDateFilterDropdownA
 
   dateFilterDropdownLabel(): string | NestedStringArray {
     return (
-      (app.search.params().date === DateFilter.CUSTOM_DATE_PRESET &&
+      (app.search.state.params().date === DateFilter.CUSTOM_DATE_PRESET &&
         (app.search.params().start && app.search.params().end
           ? `${app.search.params().start} – ${app.search.params().end}`
           : app.translator.trans('glowingblue-date-filters.forum.index_date_filter.custom_date_range_button'))) ||

@@ -1,5 +1,6 @@
 import app from 'flarum/forum/app';
-import Modal, { IInternalModalAttrs } from 'flarum/common/components/Modal';
+import { IFormModalAttrs } from 'flarum/common/components/FormModal';
+import FormModal from 'flarum/common/components/FormModal';
 import Button from 'flarum/common/components/Button';
 import ItemList from 'flarum/common/utils/ItemList';
 import { FORMAT } from '../utils/createDateRangeUtil';
@@ -7,11 +8,13 @@ import { FORMAT } from '../utils/createDateRangeUtil';
 import type { NestedStringArray } from '@askvortsov/rich-icu-message-formatter';
 import type Mithril from 'mithril';
 
-export interface ICustomDateRangeModalAttrs extends IInternalModalAttrs {
+export interface ICustomDateRangeModalAttrs extends IFormModalAttrs {
   onApply?: (range: { start: string; end: string }) => void;
 }
 
-export default class CustomDateRangeModal<CustomAttrs extends ICustomDateRangeModalAttrs = ICustomDateRangeModalAttrs> extends Modal<CustomAttrs> {
+export default class CustomDateRangeModal<
+  CustomAttrs extends ICustomDateRangeModalAttrs = ICustomDateRangeModalAttrs,
+> extends FormModal<CustomAttrs> {
   protected start = dayjs().startOf('day').format(FORMAT);
   protected end = dayjs().startOf('day').format(FORMAT);
 
