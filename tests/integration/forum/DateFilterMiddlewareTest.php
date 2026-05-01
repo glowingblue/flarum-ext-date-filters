@@ -12,10 +12,10 @@
 namespace GlowingBlue\DateFilters\Tests\integration\forum;
 
 use Carbon\Carbon;
+use Flarum\Discussion\Discussion;
 use Flarum\Testing\integration\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use Flarum\Discussion\Discussion;
 
 class DateFilterMiddlewareTest extends TestCase
 {
