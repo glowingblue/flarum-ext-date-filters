@@ -29,7 +29,6 @@
         "flarum-extension": {
             "title": "GB Date Filters",
             "category": "feature",
-            "database-support": ["mysql", "sqlite", "pgsql"],
             "icon": {
                 "name": "far fa-calendar-alt",
                 "backgroundColor": "#00a7e3",
