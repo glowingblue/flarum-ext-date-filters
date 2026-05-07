@@ -4,7 +4,6 @@ import Button from 'flarum/common/components/Button';
 import Component, { ComponentAttrs } from 'flarum/common/Component';
 import Separator from 'flarum/common/components/Separator';
 import DateFilter from '../../common/DateFilter';
-import CustomDateRangeModal from '../components/CustomDateRangeModal';
 import ItemList from 'flarum/common/utils/ItemList';
 import dayjs from 'dayjs';
 import { FORMAT } from '../utils/createDateRangeUtil';
@@ -76,7 +75,7 @@ export default class DateFilterDropdown<CustomAttrs extends IDateFilterDropdownA
 			<Button
 				icon={(app.search.state.params().date || Object.keys(this.attrs.dateFilterMap)[0]) === DateFilter.CUSTOM_DATE_PRESET ? 'fas fa-check' : true}
 				onclick={() =>
-					app.modal.show(CustomDateRangeModal, {
+					app.modal.show(() => import('./CustomDateRangeModal'), {
 						onApply: (range: { start: string; end: string }) => {
 							app.search.state.changeDate('custom', range);
 						},
