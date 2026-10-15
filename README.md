@@ -22,4 +22,6 @@ php flarum cache:clear
 
 ## Links
 
+- [Packagist](https://packagist.org/packages/glowingblue/date-filters)
 - [GitHub](https://github.com/glowingblue/flarum-ext-date-filters)
+- [Discuss](https://discuss.flarum.org/d/40083-gb-date-filters)
