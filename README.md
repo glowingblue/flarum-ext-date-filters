@@ -4,6 +4,17 @@
 
 A [Flarum](https://flarum.org) extension. Allows filtering discussions by date ranges in the frontend.
 
+## Features
+
+- **Date filter dropdown** on the discussion list toolbar with presets: All Time, Today, Yesterday, Last week, Last month, Last year.
+- **Custom date range** modal to pick any start and end date.
+- Filters discussions by creation date and works together with search.
+- Feature visibility controlled by the **View date filter in forum** permission.
+
+<img width="1103" height="461" alt="Date filter dropdown on the discussion list" src="https://github.com/user-attachments/assets/33ac59c4-1ef8-4e35-835a-f85148c1e36d" />
+
+<img width="1118" height="493" alt="Custom date range modal" src="https://github.com/user-attachments/assets/ff49295b-49a3-4b19-8085-0363c8092c4f" />
+
 ## Installation
 
 Install with composer:
