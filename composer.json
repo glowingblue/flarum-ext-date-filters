@@ -2,21 +2,25 @@
     "name": "glowingblue/date-filters",
     "description": "Allows filtering discussions by date ranges in the frontend.",
     "keywords": [
-        "flarum"
+        "flarum",
+        "date",
+        "filters",
+        "discussions"
     ],
     "type": "flarum-extension",
-    "license": "proprietary",
+    "license": "MIT",
     "require": {
         "flarum/core": "^2.0.0"
     },
     "authors": [
         {
-            "name": "Davide Iadeluca",
-            "email": "davide.iadeluca@glowingblue.com",
-            "role": "Developer"
+            "name": "Glowing Blue AG",
+            "email": "dev@glowingblue.com",
+            "role": "Owner"
         }
     ],
     "support": {
+        "issues": "https://github.com/glowingblue/flarum-ext-date-filters/issues",
         "source": "https://github.com/glowingblue/flarum-ext-date-filters",
         "email": "dev@glowingblue.com"
     },
@@ -33,7 +37,13 @@
                 "name": "far fa-calendar-alt",
                 "backgroundColor": "#00a7e3",
                 "color": "#fff"
-            }
+            },
+            "database-support": [
+                "mysql",
+                "mariadb",
+                "sqlite",
+                "pgsql"
+            ]
         },
         "flarum-cli": {
             "modules": {

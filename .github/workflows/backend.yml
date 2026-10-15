@@ -10,6 +10,3 @@ jobs:
       enable_phpstan: true
 
       backend_directory: .
-
-    secrets:
-      composer_auth: '{"http-basic": {"repo.packagist.com": {"username": "token", "password": "${{secrets.PRIVATE_PACKAGIST_TOKEN}}"}}}'

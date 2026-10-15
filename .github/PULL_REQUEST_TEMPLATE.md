@@ -1,5 +1,5 @@
 **Resolves**
-<!-- include a link to the ticket -->
+<!-- include a link to the issue -->
 
 **Changes proposed in this pull request:**
 <!-- mention the pages and/or components which have been impacted -->
