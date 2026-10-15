@@ -22,6 +22,7 @@
     "support": {
         "issues": "https://github.com/glowingblue/flarum-ext-date-filters/issues",
         "source": "https://github.com/glowingblue/flarum-ext-date-filters",
+        "forum": "https://discuss.flarum.org/d/40083-gb-date-filters",
         "email": "dev@glowingblue.com"
     },
     "autoload": {
