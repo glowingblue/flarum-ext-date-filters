@@ -12,6 +12,9 @@
     "webpack": "^5.104.1",
     "webpack-cli": "^5.1.4"
   },
+  "resolutions": {
+        "@types/node": "^22.0.0"
+    },
   "scripts": {
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
