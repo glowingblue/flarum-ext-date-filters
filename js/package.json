@@ -4,13 +4,16 @@
   "version": "0.0.0",
   "devDependencies": {
     "@flarum/prettier-config": "^1.0.0",
-    "flarum-webpack-config": "^3.0.0",
+    "flarum-webpack-config": "^3.0.6",
     "bundlewatch": "^0.4.1",
     "flarum-tsconfig": "^2.0.0",
     "prettier": "^3.0.3",
     "typescript-coverage-report": "^0.6.1",
     "webpack": "^5.104.1",
     "webpack-cli": "^5.1.4"
+  },
+  "resolutions": {
+    "@types/node": "^22.0.0"
   },
   "scripts": {
     "dev": "webpack --mode development --watch",
@@ -24,5 +27,6 @@
     "check-typings": "tsc --noEmit --emitDeclarationOnly false",
     "check-typings-coverage": "typescript-coverage-report"
   },
-  "prettier": "@flarum/prettier-config"
+  "prettier": "@flarum/prettier-config",
+  "type": "module"
 }
