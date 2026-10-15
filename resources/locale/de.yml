@@ -15,7 +15,7 @@ glowingblue-date-filters:
       custom_date_range_button: Benutzerdefiniert...
 
     custom_date_range_modal:
-      title: Benutzerdefinierten Datumsbereich auswaehlen
+      title: Benutzerdefinierter Datumsbereich
       start_date_label: 'Startdatum:'
       end_date_label: 'Enddatum:'
       cancel_button: Abbrechen
