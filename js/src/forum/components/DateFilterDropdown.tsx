@@ -5,8 +5,7 @@ import Component, { ComponentAttrs } from 'flarum/common/Component';
 import Separator from 'flarum/common/components/Separator';
 import DateFilter from '../../common/DateFilter';
 import ItemList from 'flarum/common/utils/ItemList';
-import dayjs from 'dayjs';
-import { FORMAT } from '../utils/createDateRangeUtil';
+import { isValidDay } from '../utils/createDateRangeUtil';
 
 import type Mithril from 'mithril';
 
@@ -34,11 +33,10 @@ export default class DateFilterDropdown<CustomAttrs extends IDateFilterDropdownA
 		const customRangeLabel = app.translator.trans('glowingblue-date-filters.forum.index_date_filter.custom_date_range_button');
 
 		if (params.date === DateFilter.CUSTOM_DATE_PRESET) {
-			const start = dayjs(params.start, FORMAT, true);
-			const end = dayjs(params.end, FORMAT, true);
+			const { start, end } = params;
 
-			if (start.isValid() && end.isValid() && !end.isBefore(start)) {
-				return `${start.format(FORMAT)} – ${end.format(FORMAT)}`;
+			if (isValidDay(start) && isValidDay(end) && end >= start) {
+				return `${start} – ${end}`;
 			}
 
 			return customRangeLabel;
