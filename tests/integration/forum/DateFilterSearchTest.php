@@ -37,15 +37,21 @@ class DateFilterSearchTest extends TestCase
             $id++;
             $createdAt = Carbon::now()->subDays($daysAgo)->toDateTimeString();
 
-            $discussions[] = ['id' => $id, 'title' => "lightsail discussion $id", 'created_at' => $createdAt, 'user_id' => 1, 'first_post_id' => $id, 'comment_count' => 1];
+            $discussions[] = ['id' => $id, 'title' => "lightsail discussion $id", 'created_at' => $createdAt, 'user_id' => 1, 'comment_count' => 1];
             $posts[] = ['id' => $id, 'discussion_id' => $id, 'number' => 1, 'created_at' => $createdAt, 'user_id' => 1, 'content' => '<t><p>lightsail</p></t>'];
         }
 
-        $discussions[] = ['id' => 6, 'title' => 'unrelated discussion', 'created_at' => Carbon::now()->toDateTimeString(), 'user_id' => 1, 'first_post_id' => 6, 'comment_count' => 1];
+        $discussions[] = ['id' => 6, 'title' => 'unrelated discussion', 'created_at' => Carbon::now()->toDateTimeString(), 'user_id' => 1, 'comment_count' => 1];
         $posts[] = ['id' => 6, 'discussion_id' => 6, 'number' => 1, 'created_at' => Carbon::now()->toDateTimeString(), 'user_id' => 1, 'content' => '<t><p>unrelated</p></t>'];
 
         $this->database()->table('discussions')->insert($this->rowsThroughFactory(Discussion::class, $discussions));
         $this->database()->table('posts')->insert($this->rowsThroughFactory(Post::class, $posts));
+
+        // Each discussion's first post is its own id; set once the posts exist,
+        // since first_post_id is a foreign key.
+        foreach ($discussions as $discussion) {
+            $this->database()->table('discussions')->where('id', $discussion['id'])->update(['first_post_id' => $discussion['id']]);
+        }
 
         // Rolling back ended the transaction that ::app() started.
         $this->database()->beginTransaction();
@@ -57,8 +63,8 @@ class DateFilterSearchTest extends TestCase
     {
         parent::tearDown();
 
-        $this->database()->table('posts')->delete();
         $this->database()->table('discussions')->delete();
+        $this->database()->table('posts')->delete();
     }
 
     #[Test]
