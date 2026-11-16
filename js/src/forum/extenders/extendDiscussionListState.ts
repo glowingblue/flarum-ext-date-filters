@@ -34,11 +34,14 @@ export default function extendDiscussionListState() {
 		params.filter ||= {};
 
 		if (created) {
-			params.filter.created = created;
-
+			// Turn gambits in the search (such as a typed `created:`) into filters
+			// now, rather than when the store sends the request, so the selected
+			// range is set after them and wins.
 			if (params.filter.q) {
-				params.filter.q += ` created:${created}`;
+				params.filter = app.search.gambits.apply('discussions', params.filter);
 			}
+
+			params.filter.created = created;
 		} else {
 			delete params.filter.created;
 		}

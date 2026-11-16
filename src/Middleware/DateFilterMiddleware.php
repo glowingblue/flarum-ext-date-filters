@@ -50,8 +50,6 @@ class DateFilterMiddleware implements MiddlewareInterface
 
         $params = $this->applyCreatedToFilter($params, $createdValue);
 
-        $params = $this->applyCreatedToSearch($params, $createdValue);
-
         return $handler->handle($request->withQueryParams($params));
     }
 
@@ -94,17 +92,6 @@ class DateFilterMiddleware implements MiddlewareInterface
         $params['filter'] = array_merge($params['filter'] ?? [], [
             'created' => $createdValue,
         ]);
-
-        return $params;
-    }
-
-    private function applyCreatedToSearch(array $params, string $createdValue): array
-    {
-        $token = 'created:'.$createdValue;
-
-        if (isset($params['q']) && $params['q'] !== '') {
-            $params['q'] = trim($params['q'].' '.$token);
-        }
 
         return $params;
     }

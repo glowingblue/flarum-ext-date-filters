@@ -3,8 +3,7 @@ import { IFormModalAttrs } from 'flarum/common/components/FormModal';
 import FormModal from 'flarum/common/components/FormModal';
 import Button from 'flarum/common/components/Button';
 import ItemList from 'flarum/common/utils/ItemList';
-import dayjs from 'dayjs';
-import { FORMAT } from '../utils/createDateRangeUtil';
+import { isValidDay, utcToday } from '../utils/createDateRangeUtil';
 
 import type Mithril from 'mithril';
 
@@ -15,8 +14,8 @@ export interface ICustomDateRangeModalAttrs extends IFormModalAttrs {
 export default class CustomDateRangeModal<
 	CustomAttrs extends ICustomDateRangeModalAttrs = ICustomDateRangeModalAttrs,
 > extends FormModal<CustomAttrs> {
-	protected start = dayjs().startOf('day').format(FORMAT);
-	protected end = dayjs().startOf('day').format(FORMAT);
+	protected start = utcToday();
+	protected end = utcToday();
 
 	private pendingApply: { start: string; end: string } | null = null;
 
@@ -50,8 +49,7 @@ export default class CustomDateRangeModal<
 	}
 
 	body(): JSX.Element {
-		const today = dayjs().startOf('day');
-		const maxEnd = today.format(FORMAT);
+		const maxEnd = utcToday();
 
 		return (
 			<div>
@@ -66,11 +64,7 @@ export default class CustomDateRangeModal<
 					oninput={(e: InputEvent) => {
 						this.start = (e.target as HTMLInputElement).value;
 
-						const startDate = dayjs(this.start, FORMAT, true);
-						if (!startDate.isValid()) return;
-
-						const endDate = dayjs(this.end, FORMAT, true);
-						if (endDate.isValid() && endDate.isBefore(startDate)) {
+						if (isValidDay(this.start) && isValidDay(this.end) && this.end < this.start) {
 							this.end = this.start;
 						}
 					}}
@@ -90,11 +84,7 @@ export default class CustomDateRangeModal<
 					oninput={(e: InputEvent) => {
 						this.end = (e.target as HTMLInputElement).value;
 
-						const endDate = dayjs(this.end, FORMAT, true);
-						if (!endDate.isValid()) return;
-
-						const startDate = dayjs(this.start, FORMAT, true);
-						if (startDate.isValid() && startDate.isAfter(endDate)) {
+						if (isValidDay(this.start) && isValidDay(this.end) && this.start > this.end) {
 							this.start = this.end;
 						}
 					}}
@@ -137,8 +127,7 @@ export default class CustomDateRangeModal<
 	}
 
 	private isValid(): boolean {
-		const startDate = dayjs(this.start, FORMAT, true);
-		const endDate = dayjs(this.end, FORMAT, true);
-		return startDate.isValid() && endDate.isValid() && !endDate.isBefore(startDate);
+		// YYYY-MM-DD strings sort in date order.
+		return isValidDay(this.start) && isValidDay(this.end) && this.end >= this.start;
 	}
 }
